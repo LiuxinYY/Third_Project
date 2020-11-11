@@ -29,129 +29,109 @@
     - 定义初始化tax1,tax1的值为对学费和薪水计算得到的纳税额
     - 初始化研究生Postgradute对象，并将输入的数据以及计算得到的数据传入对象 
     - 打印输出纳税额
-6. 添加内容
+3. 添加内容
     - 对输入内容进行数据类型判断（若输入错误，则重新输入）
 # 四、核心代码
-1. 有参和无参构造方法
+1. 接口的声明
 ```
-	//有参构造方法
-	public People(int number, String name, Boolean sex, int age) {
-		super();
-		this.number = number;
-		this.name = name;
-		this.sex = sex;
-		this.age = age;
+//定义接口
+interface Student{
+//	定义抽象方法，缴纳学费
+	public abstract void addFee(double tuition);
+//	定义非抽象方法，获取学费
+	public double getFee();
+}
+```
+2. 接口的实现
+```
+//实现接口
+public class Postgradute implements Student,Teacher {
+	private String name;
+	private int number;
+	private int age;
+	private boolean sex;
+	private double tuition;
+	private double salary;
+	private double tax;
+```
+3. 重写接口中的方法，给出方法体
+```
+//	重写接口中的方法，给出方法体
+	public void addSalary(double salary) {
+		// TODO Auto-generated method stub
+		this.salary=salary;
 	}
-//	无参构造方法
-	public People() {
-		super();
-	}
-```
-2. Object根类的toString（）方法
-```
-//	Object根类的toString（）方法,判断Boolean类型的男女性别
-	public String toString() {
-		if(sex==true){
-		return "People [编号" + number + ", 名字" + name + ", 性别" + "女"
-				+ ", 年龄" + age + "]";
-		}else
-			return "[编号" + number + ", 名字" + name + ", 性别" + "男"
-					+ ", 年龄" + age + "]";
-	}
-```
-3. 使用super调用父类中的构造方法
-```
-//	使用super调用父类中的构造方法
-	public Student(int number, String name, Boolean sex, int age) {
-		super(number, name, sex, age);
-	}
-```
-4. 实现一门课程只由一门老师教授
-```
-//实现一门课程只由一门老师教授
-	@Override
-	public String toString() {
-		if(tea.getName()==c.getTeacher()){
-			return "学生："+super.toString()+"\n所选课程" +c+"\n教师信息"+tea;
-		}else
-			return "学生："+super.toString()+"\n所选课程" +c;		
-	}
-	public String show(){
-		return "学生："+super.toString();
-		 
+
+	public double getSalary() {
+		// TODO Auto-generated method stub
+		return this.salary;
 	}
 ```
-5. 实例化对象
+4. 用static定义方法
 ```
-//		实例化对象（有参）
-		Student s1=new Student(1,"杨洋",false,13);
-		Course c1=new Course(5555, "Java", "教室306", "张老师", "15:00");
-//		实例化对象 （无参）
-		Course c2=new Course();
-		Teacher t1=new Teacher(33, "张老师", false, 30);
+interface TAX{
+	int month=12;
+	int ST=5000;
+	int ST1=8000;
+	int ST2=17000;
+	double RETE=0.03;
+	double RETE1=0.1;
+}
+//定义静态方法
+class A implements TAX{
+	public static double Tex(double salary,double tuition){
+		double a =0;
+		double i=salary*12-tuition;
+		if(i<=ST*12){
+			a=0;
+			System.out.println("你今年无需缴纳税费");
+		}else if(i>=ST*12 && i<=ST1*12){
+			a=i*RETE;
+		}else if(i>=ST1*12 && i<=ST2*12){
+			a=i*RETE1;
+		}
+		return a;
+		
+	}
+}
 ```
-6. 设置和获取对象成员值
+5. 采用Scanner类实现运行时交互式输入
 ```
-public int getCnumber() {
-		return cnumber;
-	}
-	public void setCnumber(int cnumber) {
-		this.cnumber = cnumber;
-	}
-	public String getCname() {
-		return cname;
-	}
-	public void setCname(String cname) {
-		this.cname = cname;
-	}
-	public String getAdress() {
-		return adress;
-	}
-	public void setAdress(String adress) {
-		this.adress = adress;
-	}
-	public String getTeacher() {
-		return teacher;
-	}
-	public void setTeacher(String teacher) {
-		this.teacher = teacher;
-	}
-	public String getTime() {
-		return time;
-	}
-	public void setTime(String time) {
-		this.time = time;
-	}
+//		输入数据
+		Scanner scanner1 = new Scanner(System.in);
+		System.out.println("请输入你的月工资：");
+		double salary = scanner1.nextDouble();
+		
+		Scanner scanner2 = new Scanner(System.in);
+		System.out.println("请输入你的学费：");
+		double tuition = scanner2.nextDouble();
 ```
-6. 变量赋值
+6. 调用静态方法，并初始化对象
 ```
-//		为变量赋值
-//		s1.setCourse(c2);
-		s1.setCourse(c1);
-		t1.setCourse(c1);
-		s1.setTea(t1);
+		double tex1;
+		tex1=A.Tex( salary, tuition);
+		Postgradute p1=new Postgradute("张三", 1234567, 15, false, tuition, salary, tex1);
 ```
-7. 调用方法
+6. 异常判断
 ```
-//		判断学生是否选课
-		if(s1.getC().getCnumber()==0){
-			System.out.println(s1.show()+"\n该学生已经退课");
-		}else
-			System.out.println(s1.toString());
+		}catch(InputMismatchException e){
+			System.out.println("您输入的数据错误\n");
+			continue input;
+		}
 ```
 # 五、实验结果
-1. 学生选课成功，并且课程中老师信息与所给老师信息相等时（一门课程只由一门老师教授），输出结果
+1. 当年收入减去学费小于收税金额时，输出结果
 
-![RUNOOB 图标](https://p.qlogo.cn/qqmail_head/ajNVdqHZLLCjXzl2bwPUPHEQOOzARqLRmZFqzPgyAkzdweOBibC68M8Sof8atNPjFjb2wpZzEibR0/0)
+![RUNOOB 图标](http://p.qlogo.cn/qqmail_head/7YEOYibLSdBqZVD4CyGuGu0fhvWt8ibzgj1bHMWR2jeQic86GGB0xcDwRibXxASyVPzgNpY4ic8duJ4A/0)
 
-2. 学生选课成功，并且课程中老师信息与所给老师信息不相等时（一门课程只由一门老师教授），输出结果
+2. 当年收入减去学费大于收税金额时，输出结果
 
-![RUNOOB 图标](https://p.qlogo.cn/qqmail_head/ajNVdqHZLLCjXzl2bwPUPHEQOOzARqLRmZFqzPgyAkxxj7ugl4HFaGiaYWicV4yplW9ky95b9BPns/0)
+![RUNOOB 图标](https://p.qlogo.cn/qqmail_head/ajNVdqHZLLCjXzl2bwPUPHEQOOzARqLRmZFqzPgyAkyQs5QCQsC5SqjEtPibT1dfvqCKSx4ibslMM/0)
 
-3. 学生退课成功时，输出结果，只输出学生信息
+3.当输入数据类型错误时，输出
 
-![RUNOOB 图标](https://p.qlogo.cn/qqmail_head/ajNVdqHZLLCjXzl2bwPUPHEQOOzARqLRmZFqzPgyAkxkiaN2uoskv5iavEaia1oQicokVAG3ET75cOM/0)
+![RUNOOB 图标](https://p.qlogo.cn/qqmail_head/ajNVdqHZLLCjXzl2bwPUPHEQOOzARqLRmZFqzPgyAkyZxOciaoONJvdRH9vJvqncAZTJlCrjbqZI/0)
 
 
 # 六、实验感想
-通过本次实验所写的程序代码，通过动手编程实现，观察输出结果，了解系统中的实体及其关系，学会定义类中的属性以及方法，掌握面向对象的类设计方法（属性、方法）。 学会使用类的继承用法，通过构造方法实例化对象，学会使用super()，用于实例化子类，调用父类中的构造方法，学会使用Object根类的toString（）方法,应用在相关对象的信息输出中。
+通过本次实验所写的程序代码，通过动手编程实现，观察输出结果，学会Java中抽象类和抽象方法的定义， 了解Java中接口的定义，熟练掌握接口的定义形式以及接口的实现方法了解异常的使用方法，并在程序中根据输入情况做异常处理。
